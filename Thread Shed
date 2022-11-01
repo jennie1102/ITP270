@@ -1,0 +1,49 @@
+daily_sales_replaced = daily_sales.replace(";,;", "+")
+daily_transactions = daily_sales_replaced.split(",")
+#print(daily_transactions)
+daily_transactions_split = []
+for transaction in daily_transactions:
+  daily_transactions_split.append(transaction.split("+"))
+#print(daily_transactions_split)
+
+transactions_clean = []
+for transac in daily_transactions_split:
+  transaction_clean = []
+  for tran in transac:
+    transaction_clean.append(tran.replace("\n", "").strip(" "))
+  transactions_clean.append(transaction_clean)
+#print(transactions_clean)
+  
+customers = []
+sales = []
+thread_sold = []
+for tran_clean in transactions_clean:
+  customers.append(tran_clean[0])
+  sales.append(tran_clean[1])
+  thread_sold.append(tran_clean[2])
+#print(customers, sales, thread_sold)
+  
+total_sales = 0
+for sale in sales:
+  sale = float(sale.strip("$"))
+  total_sales += sale
+#print(total_sales)
+#print(thread_sold)
+thread_sold_split = []
+for item in thread_sold:
+  #print(item)
+  for color in item.split("&"):
+    thread_sold_split.append(color)
+#print(thread_sold_split)
+
+def color_count(color):
+  count = 0
+  for items in thread_sold_split:
+    if color == items:
+      count += 1
+  return(count)
+
+print(color_count("white"))
+colors =  ['red','yellow','green','white','black','blue','purple']
+for color in colors:
+  print("{a} threads of {b} were sold today".format(a = color_count(color), b = color))
